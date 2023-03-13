@@ -1,0 +1,12 @@
+syntax = "proto3";
+package info;
+option go_package = "github.com/arpitbbhayani/grpc-in-depth/infosvc";
+
+service InfoSvc {
+    rpc WhatIsGithub (WhatIsGithubRequest) returns (WhatIsGithubResponse) {}
+}
+
+message WhatIsGithubRequest {}  
+message WhatIsGithubResponse {
+    string text = 1;
+}

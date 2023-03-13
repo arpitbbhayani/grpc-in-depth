@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	InfoSvc_WhatIsGithub_FullMethodName = "/info.InfoSvc/WhatIsGithub"
+	InfoSvc_WhoAmI_FullMethodName       = "/info.InfoSvc/WhoAmI"
 )
 
 // InfoSvcClient is the client API for InfoSvc service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type InfoSvcClient interface {
 	WhatIsGithub(ctx context.Context, in *WhatIsGithubRequest, opts ...grpc.CallOption) (*WhatIsGithubResponse, error)
+	WhoAmI(ctx context.Context, in *WhoAmIRequest, opts ...grpc.CallOption) (*WhoAmIResponse, error)
 }
 
 type infoSvcClient struct {
@@ -46,11 +48,21 @@ func (c *infoSvcClient) WhatIsGithub(ctx context.Context, in *WhatIsGithubReques
 	return out, nil
 }
 
+func (c *infoSvcClient) WhoAmI(ctx context.Context, in *WhoAmIRequest, opts ...grpc.CallOption) (*WhoAmIResponse, error) {
+	out := new(WhoAmIResponse)
+	err := c.cc.Invoke(ctx, InfoSvc_WhoAmI_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // InfoSvcServer is the server API for InfoSvc service.
 // All implementations must embed UnimplementedInfoSvcServer
 // for forward compatibility
 type InfoSvcServer interface {
 	WhatIsGithub(context.Context, *WhatIsGithubRequest) (*WhatIsGithubResponse, error)
+	WhoAmI(context.Context, *WhoAmIRequest) (*WhoAmIResponse, error)
 	mustEmbedUnimplementedInfoSvcServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedInfoSvcServer struct {
 
 func (UnimplementedInfoSvcServer) WhatIsGithub(context.Context, *WhatIsGithubRequest) (*WhatIsGithubResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WhatIsGithub not implemented")
+}
+func (UnimplementedInfoSvcServer) WhoAmI(context.Context, *WhoAmIRequest) (*WhoAmIResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WhoAmI not implemented")
 }
 func (UnimplementedInfoSvcServer) mustEmbedUnimplementedInfoSvcServer() {}
 
@@ -92,6 +107,24 @@ func _InfoSvc_WhatIsGithub_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _InfoSvc_WhoAmI_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WhoAmIRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InfoSvcServer).WhoAmI(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InfoSvc_WhoAmI_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InfoSvcServer).WhoAmI(ctx, req.(*WhoAmIRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // InfoSvc_ServiceDesc is the grpc.ServiceDesc for InfoSvc service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var InfoSvc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "WhatIsGithub",
 			Handler:    _InfoSvc_WhatIsGithub_Handler,
+		},
+		{
+			MethodName: "WhoAmI",
+			Handler:    _InfoSvc_WhoAmI_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

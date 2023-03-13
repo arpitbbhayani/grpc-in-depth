@@ -4,9 +4,15 @@ option go_package = "github.com/arpitbbhayani/grpc-in-depth/infosvc";
 
 service InfoSvc {
     rpc WhatIsGithub (WhatIsGithubRequest) returns (WhatIsGithubResponse) {}
+    rpc WhoAmI (WhoAmIRequest) returns (WhoAmIResponse) {}
 }
 
 message WhatIsGithubRequest {}  
 message WhatIsGithubResponse {
     string text = 1;
+}
+
+message WhoAmIRequest {}  
+message WhoAmIResponse {
+    string username = 1;
 }

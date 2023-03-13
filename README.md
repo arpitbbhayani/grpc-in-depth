@@ -34,17 +34,29 @@ default `$GOPATH` is `$HOME/go`.
 
 > Ensure that your `$GOPATH/bin` is in the `$PATH` variable.
 
-## Postman for gRPC
+### Postman for gRPC
 
 Refer the video, [gRPC Requests | Postman Level Up](https://www.youtube.com/watch?v=gfYGqMb81GQ),
 to setup [postman](https://www.postman.com/) to make client calls to gRPC.
 
+### Setting up Env
+
+Copy the `.env.sample` file to `.env` and update it with your secrets. The `.env` is
+already added to the `.gitignore` so don't worry your secrets will not be checked in.
+
+```
+$ cp .env.sample .env
+```
+
 ## Starting services
 
-### Info Service
+### Compiling protos and generating files
 
-Info service is a really simple service that exposes one method `WhatIsGitHub`
-that upon invocation returns what Github is.
+Server code and stub code needs to be generated from the `proto` files.
+So, whenever you change `proto` file for any service, make sure you
+re-generate the code using the following command.
+
+In the following example, we are re-generating the code for the `infosvc`.
 
 ```
 $ cd infosvc
@@ -54,5 +66,14 @@ $ protoc \
     --go-grpc_out=. \
     --go-grpc_opt=paths=source_relative \
     proto/main.proto
-$ go run main.go
+$ cd ..
+```
+
+### Info Service
+
+Info service is a really simple service that exposes one method `WhatIsGitHub`
+that upon invocation returns what Github is.
+
+```
+$ go run infosvc/main.go
 ```

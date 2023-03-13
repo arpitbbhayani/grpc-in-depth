@@ -12,6 +12,6 @@ type InfoSvcServerV1 struct {
 
 func (InfoSvcServerV1) WhatIsGithub(context.Context, *infosvc_proto.WhatIsGithubRequest) (*infosvc_proto.WhatIsGithubResponse, error) {
 	return &infosvc_proto.WhatIsGithubResponse{
-		Text: "Github is where developers code, collaborate, and ship.",
+		Text: "GitHub is a platform for developers to store, manage, and share their code repositories.",
 	}, nil
 }
